@@ -1,0 +1,33 @@
+{
+  "name": "cnki-research-workflow",
+  "version": "0.1.0",
+  "description": "Codex-native CNKI research workflow for search, screening, authorized full-text verification, citations, and Zotero handoff.",
+  "author": {
+    "name": "cuijerdaye-hub",
+    "email": "cuijerdaye@gmail.com",
+    "url": "https://github.com/cuijerdaye-hub"
+  },
+  "homepage": "https://github.com/cuijerdaye-hub/cnki-research-workflow",
+  "repository": "https://github.com/cuijerdaye-hub/cnki-research-workflow",
+  "license": "MIT",
+  "keywords": [
+    "cnki",
+    "codex",
+    "academic-research",
+    "literature-search",
+    "citation-management"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "CNKI 研究工作流",
+    "shortDescription": "知网检索、精筛、全文核验与引用管理",
+    "longDescription": "面向 Codex 的 CNKI 端到端工作流，组合小批量检索、登录态页面精筛、授权下载、PDF 全文核验、参考文献校验与 Zotero 交接。",
+    "developerName": "cuijerdaye-hub",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "检索并筛选知网文献，核验相关性后整理参考文献。",
+      "按来源层次筛选 CNKI 论文并生成候选清单。"
+    ]
+  }
+}

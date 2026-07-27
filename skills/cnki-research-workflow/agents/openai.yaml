@@ -1,0 +1,4 @@
+interface:
+  display_name: "CNKI 研究工作流"
+  short_description: "面向 Codex 的知网检索、精筛、全文核验与引用管理"
+  default_prompt: "Use $cnki-research-workflow 检索并筛选知网文献，核验全文相关性并整理参考文献。"
