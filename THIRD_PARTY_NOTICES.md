@@ -28,4 +28,10 @@ The workflow was informed by publicly visible capability descriptions from the f
 - License status: personal learning/evaluation is allowed by default; modification, redistribution, or use in another published project requires prior permission.
 - Relationship: general safety concepts such as screening before download and stopping on guarded states were reviewed; no code, selectors, bridge implementation, or files were copied.
 
+## O0000-code/paper-search-pro
+
+- Repository: https://github.com/O0000-code/paper-search-pro
+- License: Apache-2.0
+- Relationship: optional external skill and runtime for structured searches across English academic sources. It is installed separately; no implementation code or files are included here.
+
 Users must comply with CNKI terms, institutional access rules, copyright law, and the licenses of every optional dependency they install separately.

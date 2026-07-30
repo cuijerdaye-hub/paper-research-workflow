@@ -5,6 +5,8 @@
 | 用户目标 | 首选能力 | 升级条件 |
 |---|---|---|
 | 主题、作者、年份、文献类型检索 | `$cnki-search` / `cnki` CLI | CLI 被拦截，或需要页面限定条件 |
+| 英文主题检索、批量候选与饱和度 | `$paper-search-pro` headless `agent_search` | 配置缺失、限流、零命中或需要替代数据库 |
+| 英文降级发现与 DOI 核验 | `$paper-lookup` | 拟正式引用时再用 `$citation-management` 交叉核验 |
 | GB/T 7714 初稿 | `cnki --format=citation` | 终稿必须进入元数据核验 |
 | CSSCI、北大核心、CSCD、EI | `$chrome:control-chrome` | 页面筛选无法稳定完成时停止 |
 | 论文摘要、关键词、基金、机构 | CLI 详情；失败后 Chrome | 只处理短名单 |
@@ -21,6 +23,17 @@
 3. Chrome 负责登录态页面、来源筛选、期刊信息和授权下载。
 4. PDF 负责方法、场景、变量、结论和局限的全文证据。
 5. 引用工具负责格式与 DOI 一致性，不能补造缺失信息。
+6. 中英文检索式分开执行；统一清单只在本地合并，不跨语种猜测同一性。
+
+## 英文路径
+
+1. 用英文概念块调用 `$paper-search-pro`；由编排 Skill 调用时使用 `agent_search` JSON 通道。
+2. 保留 OpenAlex/Semantic Scholar/Crossref 等来源标识、查询式、计数、限流和错误信息。
+3. 将启发式相关性视为候选排序；Codex 依据题名、摘要、理论、方法和场景重新分级。
+4. 对进入正文的候选执行 DOI/题名存在性核验。
+5. 如果多源运行失败，加载 `$paper-lookup` 降级，并明确覆盖差异。
+
+详见 [english-routing.md](english-routing.md)。
 
 ## 会话交接
 
@@ -53,9 +66,17 @@
 - 许可证限制修改、再分发和用于其他发布项目。
 - 本工作流不内嵌其文件、脚本、选择器或桥接代码。
 
+### O0000-code/paper-search-pro
+
+- 仓库采用 Apache-2.0 License。
+- 本工作流只调用用户独立安装的 Skill 和公开命令，不复制其脚本、模板或运行数据。
+- 负责英文 OpenAlex/Semantic Scholar/Crossref/PubMed/arXiv 候选发现、结构化去重和存在性核验。
+- API Key、配额、缓存和期刊分区数据由 `paper-search-pro` 自身配置管理。
+
 ## 工具不可用时
 
 - `cnki` 不可用：报告缺失，并按 `$cnki-search` 的安装说明处理。
 - Chrome 不可用：仍可交付 CLI 候选清单，但将来源层次、详情和下载标为待核验。
 - PDF 工具不可用：保留下载文件，不声称完成全文核验。
 - Zotero 不可用：输出 RIS、BibTeX 或结构化 JSON，由用户后续导入。
+- `paper-search-pro` 不可用：加载 `$paper-lookup` 降级；保留错误与实际来源，不声称完成多源或饱和度检索。

@@ -1,7 +1,7 @@
 {
   "name": "cnki-research-workflow",
-  "version": "0.1.0",
-  "description": "Codex-native CNKI research workflow for search, screening, authorized full-text verification, citations, and Zotero handoff.",
+  "version": "0.2.0",
+  "description": "Codex-native bilingual literature workflow combining CNKI with English academic databases, screening, verification, deduplication, and citation handoff.",
   "author": {
     "name": "cuijerdaye-hub",
     "email": "cuijerdaye@gmail.com",
@@ -12,6 +12,9 @@
   "license": "MIT",
   "keywords": [
     "cnki",
+    "openalex",
+    "crossref",
+    "semantic-scholar",
     "codex",
     "academic-research",
     "literature-search",
@@ -19,15 +22,15 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "CNKI 研究工作流",
-    "shortDescription": "知网检索、精筛、全文核验与引用管理",
-    "longDescription": "面向 Codex 的 CNKI 端到端工作流，组合小批量检索、登录态页面精筛、授权下载、PDF 全文核验、参考文献校验与 Zotero 交接。",
+    "displayName": "中英文联合文献研究",
+    "shortDescription": "知网与英文多数据库联合检索、去重、核验和引用管理",
+    "longDescription": "面向 Codex 的中英文文献端到端工作流：中文侧使用 CNKI，英文侧使用 paper-search-pro 及备用学术数据库，并统一完成筛选、去重、全文核验、参考文献校正和 Zotero 交接。",
     "developerName": "cuijerdaye-hub",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
-      "检索并筛选知网文献，核验相关性后整理参考文献。",
-      "按来源层次筛选 CNKI 论文并生成候选清单。"
+      "分别检索中英文文献，统一去重、核验并整理参考文献。",
+      "围绕研究框架生成中文与英文检索式，分数据库检索后输出可追溯候选清单。"
     ]
   }
 }
