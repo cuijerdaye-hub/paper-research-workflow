@@ -51,7 +51,7 @@ cnki search "<query>" --field=topic --sort=relevance --size=20 --format=json
 - 所有知网请求串行执行，禁止并发批量搜索。
 - 需要引用时可用 `--format=citation`，但不得直接把输出视为终稿。
 - 对论文详情只使用检索返回的 URL；不要手工重建。
-- 遇到退出码 2、验证码、登录要求或权限错误时停止，不伪造结果。
+- 遇到退出码 2、验证码、登录要求或权限错误时停止，不伪造结果。不同 `cnki` 版本的“无结果”退出码可能不同，还要识别 stderr 中的 `no results matched the query`。
 
 将各查询的 JSON 保存到 `<workspace>/work/cnki/<slug>/raw/`。使用候选合并脚本生成本地清单：
 
@@ -70,7 +70,8 @@ python "<skill-root>/scripts/merge_candidates.py" `
 $env:PYTHONPATH = "$env:USERPROFILE\.codex\skills\paper-search-pro"
 python -m scripts.agent_search "<English query>" `
   --lang en --verify --min-relevance 0 `
-  --year-min 2016 --limit 100 > english-candidates.json
+  --year-min 2016 --limit 100 |
+  Out-File -Encoding utf8 english-candidates.json
 ```
 
 规则：
@@ -80,6 +81,7 @@ python -m scripts.agent_search "<English query>" `
 - 真实研究默认迭代多个英文检索式，直到新一轮不再增加高相关候选；不能把单次查询冒充穷尽检索。
 - 对拟引用记录优先使用 `--verify-refs` 或 `$citation-management` 复核 DOI、作者、年份和期刊。
 - OpenAlex/Semantic Scholar 限流、配额不足或配置缺失时停止该来源，保留错误记录并按英文降级路径处理。
+- Windows PowerShell 不要用裸 `>` 保存 JSON；它可能生成 UTF-16。使用 `Out-File -Encoding utf8`，合并脚本同时兼容 UTF-8 BOM 与 UTF-16 BOM。
 
 ### 5. 合并、去重与候选筛选
 
@@ -94,6 +96,8 @@ python "<skill-root>/scripts/merge_bilingual_candidates.py" `
 ```
 
 英文优先按规范化 DOI 去重；无 DOI 时按规范化题名 + 年份去重。中文按题名 + 年份去重。中英文题名仅在 DOI 相同时自动合并，避免把译名相近但不同的文章误合并。
+
+英文输入可直接使用 `paper-search-pro` 信封、Crossref `message.items`、Semantic Scholar `data`、OpenAlex `results` 或顶层数组。未知对象结构必须报错，禁止静默按零条处理。
 
 按题名、作者、年份去重，并从以下维度判断：主题贴合、方法贴合、应用场景、来源层次、年份、被引/下载、元数据完整性。被引量和下载量只能作为辅助证据。
 

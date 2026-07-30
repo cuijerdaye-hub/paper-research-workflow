@@ -16,8 +16,11 @@
 $env:PYTHONPATH = "$env:USERPROFILE\.codex\skills\paper-search-pro"
 python -m scripts.agent_search "<English query>" `
   --lang en --verify --min-relevance 0 `
-  --year-min <year> --limit <count> > english.json
+  --year-min <year> --limit <count> |
+  Out-File -Encoding utf8 english.json
 ```
+
+Windows PowerShell 的裸 `>` 可能把文件写成 UTF-16。优先显式使用 `Out-File -Encoding utf8`；合并脚本也会根据 BOM 兼容 UTF-8 和 UTF-16。
 
 ## 来源选择
 
@@ -39,6 +42,8 @@ python -m scripts.agent_search "<English query>" `
 - 输出不是 `ok: true` 的结构化 JSON。
 
 随后加载 `$paper-lookup`，使用当前可用的 OpenAlex、Crossref、Semantic Scholar、CORE 或 Unpaywall 能力完成候选发现与核验。降级报告必须写明实际使用的数据库、缺少的层次和恢复方法；不得把降级结果标作完整的 `paper-search-pro` 检索。
+
+备用源原始 JSON 可以直接交给合并脚本：Crossref 使用 `message.items`，Semantic Scholar 使用 `data`，OpenAlex 使用 `results`。未知结构会报错，不会静默丢弃。
 
 ## 双语合并
 

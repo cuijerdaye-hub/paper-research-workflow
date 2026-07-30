@@ -13,8 +13,74 @@ from typing import Any
 
 
 def load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
-        return json.load(handle)
+    raw = path.read_bytes()
+    if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+        text = raw.decode("utf-16")
+    else:
+        try:
+            text = raw.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            text = raw.decode("utf-16")
+    return json.loads(text)
+
+
+def first_text(value: Any) -> str:
+    if isinstance(value, list):
+        for item in value:
+            text = first_text(item)
+            if text:
+                return text
+        return ""
+    if isinstance(value, dict):
+        return first_text(value.get("display_name") or value.get("name") or value.get("title"))
+    return str(value or "").strip()
+
+
+def publication_year(row: dict[str, Any]) -> Any:
+    direct = row.get("year") or row.get("publication_year")
+    if direct:
+        return direct
+    for key in ("published", "issued", "published-print", "published-online"):
+        value = row.get(key)
+        if isinstance(value, dict):
+            parts = value.get("date-parts")
+            if isinstance(parts, list) and parts and isinstance(parts[0], list) and parts[0]:
+                return parts[0][0]
+    date = row.get("publicationDate") or row.get("publication_date")
+    if date:
+        match = re.match(r"(\d{4})", str(date))
+        if match:
+            return int(match.group(1))
+    return ""
+
+
+def inverted_abstract(value: Any) -> str:
+    if not isinstance(value, dict):
+        return ""
+    positioned: list[tuple[int, str]] = []
+    for word, positions in value.items():
+        for position in positions or []:
+            if isinstance(position, int):
+                positioned.append((position, str(word)))
+    return " ".join(word for _, word in sorted(positioned))
+
+
+def primary_source_name(row: dict[str, Any]) -> str:
+    location = row.get("primary_location")
+    if isinstance(location, dict):
+        source = location.get("source")
+        if isinstance(source, dict):
+            name = source.get("display_name") or source.get("name")
+            if name:
+                return str(name)
+    return ""
+
+
+def primary_url(row: dict[str, Any]) -> str:
+    location = row.get("primary_location")
+    if isinstance(location, dict):
+        return str(location.get("landing_page_url") or location.get("pdf_url") or "")
+    return ""
 
 
 def clean_doi(value: Any) -> str:
@@ -38,7 +104,8 @@ def author_names(value: Any) -> list[str]:
         if isinstance(item, str) and item.strip():
             names.append(item.strip())
         elif isinstance(item, dict):
-            name = item.get("name") or item.get("display_name")
+            nested_author = item.get("author") if isinstance(item.get("author"), dict) else {}
+            name = item.get("name") or item.get("display_name") or nested_author.get("display_name") or nested_author.get("name")
             if not name:
                 name = " ".join(filter(None, [item.get("given"), item.get("family")]))
             if name:
@@ -73,38 +140,58 @@ def cnki_records(payload: Any, origin: str) -> list[dict[str, Any]]:
     return output
 
 
-def english_records(payload: Any, origin: str) -> list[dict[str, Any]]:
+def english_rows(payload: Any, origin: str) -> tuple[list[Any], str]:
     if isinstance(payload, dict) and "ok" in payload:
         if not payload.get("ok"):
             raise ValueError(f"paper-search-pro result is not ok: {origin}")
-        rows = payload.get("data", [])
-    elif isinstance(payload, dict):
-        rows = payload.get("results") or payload.get("data") or []
-    else:
-        rows = payload
+        return payload.get("data", []), "paper-search-pro"
+    if isinstance(payload, dict):
+        message = payload.get("message")
+        if isinstance(message, dict) and isinstance(message.get("items"), list):
+            return message["items"], "crossref"
+        if isinstance(payload.get("results"), list):
+            return payload["results"], "openalex"
+        if isinstance(payload.get("data"), list):
+            return payload["data"], "semantic-scholar"
+        raise ValueError(f"unsupported English JSON schema: {origin}")
+    if isinstance(payload, list):
+        return payload, "generic"
+    raise ValueError(f"English JSON must be an object or list: {origin}")
+
+
+def english_records(payload: Any, origin: str) -> list[dict[str, Any]]:
+    rows, source_kind = english_rows(payload, origin)
     output = []
     for row in rows or []:
-        if not isinstance(row, dict) or not row.get("title"):
+        if not isinstance(row, dict):
             continue
-        journal = row.get("journal") or row.get("venue") or row.get("source") or ""
+        title = first_text(row.get("title"))
+        if not title:
+            continue
+        journal = row.get("journal") or row.get("venue") or row.get("source") or row.get("container-title") or primary_source_name(row)
         if isinstance(journal, dict):
             journal = journal.get("display_name") or journal.get("name") or ""
+        journal = first_text(journal)
+        external_ids = row.get("externalIds") if isinstance(row.get("externalIds"), dict) else {}
+        abstract = row.get("abstract") or inverted_abstract(row.get("abstract_inverted_index"))
+        raw_language = str(row.get("language") or "").lower()
+        language = "中文" if raw_language.startswith("zh") else "英文"
         output.append({
-            "language": row.get("language") or "英文",
-            "title": str(row.get("title", "")).strip(),
-            "authors": author_names(row.get("authors") or row.get("authorships")),
+            "language": language,
+            "title": title,
+            "authors": author_names(row.get("authors") or row.get("author") or row.get("authorships")),
             "journal": journal,
-            "year": row.get("year") or row.get("publication_year") or "",
+            "year": publication_year(row),
             "volume": row.get("volume") or "",
             "issue": row.get("issue") or "",
             "pages": row.get("pages") or row.get("page") or "",
-            "doi": clean_doi(row.get("doi")),
-            "url": row.get("url") or row.get("openalex_url") or "",
-            "abstract": row.get("abstract") or "",
-            "citation_count": row.get("citation_count") or row.get("cited_by_count") or 0,
+            "doi": clean_doi(row.get("doi") or row.get("DOI") or external_ids.get("DOI")),
+            "url": row.get("url") or row.get("URL") or row.get("openalex_url") or primary_url(row) or row.get("id") or "",
+            "abstract": abstract or "",
+            "citation_count": row.get("citation_count") or row.get("citationCount") or row.get("cited_by_count") or row.get("is-referenced-by-count") or 0,
             "downloads": "",
             "origins": [origin],
-            "metadata_status": "英文开放数据库元数据；DOI待引用前复核",
+            "metadata_status": f"{source_kind} 元数据；DOI待引用前复核",
             "fulltext_status": "未核验",
         })
     return output
