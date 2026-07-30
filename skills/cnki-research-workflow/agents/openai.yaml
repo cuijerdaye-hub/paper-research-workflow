@@ -1,4 +1,0 @@
-interface:
-  display_name: "中英文联合文献研究"
-  short_description: "知网与英文多数据库联合检索、去重、核验和引用管理"
-  default_prompt: "Use $cnki-research-workflow 分别检索中英文文献，统一去重、核验并整理参考文献。"

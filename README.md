@@ -1,4 +1,4 @@
-# CNKI Research Workflow for Codex
+# Paper Research Workflow for Codex
 
 面向 Codex 的中英文联合文献研究工作流。中文侧以中国知网为主，英文侧组合 OpenAlex、Crossref、Semantic Scholar、PubMed 和 arXiv 等来源；随后统一去重、筛选、全文核验、校正引用并交接 Zotero。
 
@@ -20,8 +20,8 @@
 ```powershell
 git clone https://github.com/cuijerdaye-hub/cnki-research-workflow.git
 Copy-Item -Recurse -Force `
-  ".\cnki-research-workflow\skills\cnki-research-workflow" `
-  "$env:USERPROFILE\.codex\skills\cnki-research-workflow"
+  ".\cnki-research-workflow\skills\paper-research-workflow" `
+  "$env:USERPROFILE\.codex\skills\paper-research-workflow"
 ```
 
 如需完整英文多数据库检索，请另行安装 [`O0000-code/paper-search-pro`](https://github.com/O0000-code/paper-search-pro)。本仓库只做编排，不复制或捆绑其代码。安装后新建一个 Codex 任务，让技能被重新发现。
@@ -39,12 +39,12 @@ cnki --version
 ## 使用示例
 
 ```text
-使用 $cnki-research-workflow 检索“电力设计院项目集协同管理”，
+使用 $paper-research-workflow 检索“电力设计院项目集协同管理”，
 分别制定中英文检索式，收集中英文期刊文章，统一去重后按章节主题输出。
 ```
 
 ```text
-使用 $cnki-research-workflow 查找近十年项目组合治理、跨项目协同、
+使用 $paper-research-workflow 查找近十年项目组合治理、跨项目协同、
 工程设计组织与数字化协作方面的中英文研究，并核验 DOI 和来源层级。
 ```
 
@@ -61,7 +61,7 @@ cnki --version
 合并示例：
 
 ```powershell
-python .\skills\cnki-research-workflow\scripts\merge_bilingual_candidates.py `
+python .\skills\paper-research-workflow\scripts\merge_bilingual_candidates.py `
   --cnki .\cnki-results.json `
   --english .\english-results.json `
   --output .\bilingual-literature.json `
@@ -83,7 +83,7 @@ python .\skills\cnki-research-workflow\scripts\merge_bilingual_candidates.py `
 
 ```text
 .codex-plugin/plugin.json
-skills/cnki-research-workflow/
+skills/paper-research-workflow/
   SKILL.md
   agents/openai.yaml
   references/

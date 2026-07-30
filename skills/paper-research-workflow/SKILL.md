@@ -1,9 +1,9 @@
 ---
-name: cnki-research-workflow
+name: paper-research-workflow
 description: 面向 Codex 的中英文联合学术检索与中国知网（CNKI）端到端研究工作流。Use when Codex needs to search, merge, screen, and cite Chinese and English literature; run CNKI searches; use paper-search-pro/OpenAlex/Crossref/Semantic Scholar for English papers; apply CSSCI/北大核心/CSCD/EI/JCR/SJR filters; verify metadata or authorized full text; export GB/T 7714/BibTeX/RIS/CSV; or hand results to Zotero. Enforces separate bilingual query plans, DOI/title deduplication, captcha/login/rate-limit stops, and explicit metadata-versus-full-text evidence labels.
 ---
 
-# 中英文联合文献研究工作流
+# Paper Research Workflow（中英文联合文献研究）
 
 将任务拆成“中文知网检索、英文开放数据库检索、统一去重筛选、全文核验、引用交付”五层。中英文必须分别规划查询，不把中文检索式直接标成英文空间，也不把 `--lang both` 当作自动翻译。
 

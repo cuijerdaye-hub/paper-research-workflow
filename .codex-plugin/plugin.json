@@ -1,6 +1,6 @@
 {
-  "name": "cnki-research-workflow",
-  "version": "0.2.2",
+  "name": "paper-research-workflow",
+  "version": "0.3.0",
   "description": "Codex-native bilingual literature workflow combining CNKI with English academic databases, screening, verification, deduplication, and citation handoff.",
   "author": {
     "name": "cuijerdaye-hub",
@@ -22,14 +22,14 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "中英文联合文献研究",
+    "displayName": "Paper Research Workflow",
     "shortDescription": "知网与英文多数据库联合检索、去重、核验和引用管理",
     "longDescription": "面向 Codex 的中英文文献端到端工作流：中文侧使用 CNKI，英文侧使用 paper-search-pro 及备用学术数据库，并统一完成筛选、去重、全文核验、参考文献校正和 Zotero 交接。",
     "developerName": "cuijerdaye-hub",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
-      "分别检索中英文文献，统一去重、核验并整理参考文献。",
+      "使用 Paper Research Workflow 分别检索中英文文献，统一去重、核验并整理参考文献。",
       "围绕研究框架生成中文与英文检索式，分数据库检索后输出可追溯候选清单。"
     ]
   }
