@@ -67,6 +67,7 @@ python "<skill-root>/scripts/merge_candidates.py" `
 优先使用 `paper-search-pro` 的结构化通道：
 
 ```powershell
+$env:PYTHONUTF8 = "1"
 $env:PYTHONPATH = "$env:USERPROFILE\.codex\skills\paper-search-pro"
 python -m scripts.agent_search "<English query>" `
   --lang en --verify --min-relevance 0 `
@@ -81,7 +82,7 @@ python -m scripts.agent_search "<English query>" `
 - 真实研究默认迭代多个英文检索式，直到新一轮不再增加高相关候选；不能把单次查询冒充穷尽检索。
 - 对拟引用记录优先使用 `--verify-refs` 或 `$citation-management` 复核 DOI、作者、年份和期刊。
 - OpenAlex/Semantic Scholar 限流、配额不足或配置缺失时停止该来源，保留错误记录并按英文降级路径处理。
-- Windows PowerShell 不要用裸 `>` 保存 JSON；它可能生成 UTF-16。使用 `Out-File -Encoding utf8`，合并脚本同时兼容 UTF-8 BOM 与 UTF-16 BOM。
+- Windows 下先设置 `PYTHONUTF8=1`，避免 Python 按 GBK 输出特殊字符时中断；PowerShell 不要用裸 `>` 保存 JSON，它可能生成 UTF-16。使用 `Out-File -Encoding utf8`，合并脚本同时兼容 UTF-8 BOM 与 UTF-16 BOM。
 
 ### 5. 合并、去重与候选筛选
 

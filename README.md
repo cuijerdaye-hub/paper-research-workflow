@@ -68,7 +68,7 @@ python .\skills\cnki-research-workflow\scripts\merge_bilingual_candidates.py `
   --csv .\bilingual-literature.csv
 ```
 
-合并脚本可读取 UTF-8、UTF-8 BOM 和带 BOM 的 UTF-16 JSON，并直接适配 `paper-search-pro`、Crossref、Semantic Scholar 与 OpenAlex 的原始结果结构。Windows PowerShell 保存英文检索结果时请使用 `Out-File -Encoding utf8`，避免裸 `>` 的版本相关编码差异。
+合并脚本可读取 UTF-8、UTF-8 BOM 和带 BOM 的 UTF-16 JSON，并直接适配 `paper-search-pro`、Crossref、Semantic Scholar 与 OpenAlex 的原始结果结构。Windows 下运行英文检索前设置 `$env:PYTHONUTF8="1"`，保存结果时使用 `Out-File -Encoding utf8`，避免默认 GBK 和裸 `>` 的版本相关编码差异。
 
 ## 安全边界
 

@@ -13,6 +13,7 @@
 推荐的结构化调用：
 
 ```powershell
+$env:PYTHONUTF8 = "1"
 $env:PYTHONPATH = "$env:USERPROFILE\.codex\skills\paper-search-pro"
 python -m scripts.agent_search "<English query>" `
   --lang en --verify --min-relevance 0 `
@@ -20,7 +21,7 @@ python -m scripts.agent_search "<English query>" `
   Out-File -Encoding utf8 english.json
 ```
 
-Windows PowerShell 的裸 `>` 可能把文件写成 UTF-16。优先显式使用 `Out-File -Encoding utf8`；合并脚本也会根据 BOM 兼容 UTF-8 和 UTF-16。
+Windows 下必须先设置 `PYTHONUTF8=1`，避免默认 GBK 无法编码题名中的特殊字符。PowerShell 的裸 `>` 还可能把文件写成 UTF-16，优先显式使用 `Out-File -Encoding utf8`；合并脚本也会根据 BOM 兼容 UTF-8 和 UTF-16。
 
 ## 来源选择
 

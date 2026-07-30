@@ -1,6 +1,6 @@
 {
   "name": "cnki-research-workflow",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Codex-native bilingual literature workflow combining CNKI with English academic databases, screening, verification, deduplication, and citation handoff.",
   "author": {
     "name": "cuijerdaye-hub",
