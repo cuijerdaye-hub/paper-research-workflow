@@ -1,6 +1,6 @@
 # Third-party design references
 
-The literature-research workflow in this repository is an original Codex orchestration skill. It does not vendor third-party CNKI clients, browser scripts, credentials, selectors, downloaders, or repository files.
+This repository contains an original Codex orchestration skill. It does not vendor third-party CNKI clients, browser scripts, credentials, selectors, downloaders, or repository files.
 
 The workflow was informed by publicly visible capability descriptions from the following projects:
 
@@ -35,10 +35,3 @@ The workflow was informed by publicly visible capability descriptions from the f
 - Relationship: optional external skill and runtime for structured searches across English academic sources. It is installed separately; no implementation code or files are included here.
 
 Users must comply with CNKI terms, institutional access rules, copyright law, and the licenses of every optional dependency they install separately.
-
-## SCUT presentation templates and branding assets
-
-- Location: `skills/scut-paper-ppt/assets/`, including the original SCUT blue template and the numbered defense-template collection.
-- Source: presentation references supplied by the repository maintainer, adapted into reusable editable layouts with generic text and image slots.
-- University names, emblems, campus photographs, and existing template artwork retain their respective rights. The repository's MIT license for original workflow instructions and code does not relicense these third-party assets.
-- Template numbers identify the reusable designs. The related page catalog and previews are included with the skill.
