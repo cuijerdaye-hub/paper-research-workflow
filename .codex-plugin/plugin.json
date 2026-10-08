@@ -1,14 +1,14 @@
 {
   "name": "paper-research-workflow",
-  "version": "0.3.0",
-  "description": "Codex-native bilingual literature workflow combining CNKI with English academic databases, screening, verification, deduplication, and citation handoff.",
+  "version": "0.4.0",
+  "description": "Codex-native bilingual literature research and editable SCUT academic presentation workflows, with numbered presentation templates and previews.",
   "author": {
     "name": "cuijerdaye-hub",
     "email": "cuijerdaye@gmail.com",
     "url": "https://github.com/cuijerdaye-hub"
   },
-  "homepage": "https://github.com/cuijerdaye-hub/cnki-research-workflow",
-  "repository": "https://github.com/cuijerdaye-hub/cnki-research-workflow",
+  "homepage": "https://github.com/cuijerdaye-hub/paper-research-workflow",
+  "repository": "https://github.com/cuijerdaye-hub/paper-research-workflow",
   "license": "MIT",
   "keywords": [
     "cnki",
@@ -18,19 +18,23 @@
     "codex",
     "academic-research",
     "literature-search",
-    "citation-management"
+    "citation-management",
+    "scut",
+    "powerpoint",
+    "presentation-templates"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Paper Research Workflow",
-    "shortDescription": "知网与英文多数据库联合检索、去重、核验和引用管理",
-    "longDescription": "面向 Codex 的中英文文献端到端工作流：中文侧使用 CNKI，英文侧使用 paper-search-pro 及备用学术数据库，并统一完成筛选、去重、全文核验、参考文献校正和 Zotero 交接。",
+    "shortDescription": "中英文文献检索、引用核验与华工学术PPT制作",
+    "longDescription": "面向 Codex 的学术研究工作流：中英文文献检索、去重、全文核验和引用整理，以及华工论文汇报与开题答辩PPT制作。附带四套编号模板、59张开题版式、可编辑文件与逐页预览。",
     "developerName": "cuijerdaye-hub",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [
       "使用 Paper Research Workflow 分别检索中英文文献，统一去重、核验并整理参考文献。",
-      "围绕研究框架生成中文与英文检索式，分数据库检索后输出可追溯候选清单。"
+      "围绕研究框架生成中文与英文检索式，分数据库检索后输出可追溯候选清单。",
+      "使用 $scut-paper-ppt，根据这份开题材料和模板二制作可编辑汇报。"
     ]
   }
 }

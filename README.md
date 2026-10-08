@@ -2,6 +2,13 @@
 
 面向 Codex 的中英文联合文献研究工作流。中文侧以中国知网为主，英文侧组合 OpenAlex、Crossref、Semantic Scholar、PubMed 和 arXiv 等来源；随后统一去重、筛选、全文核验、校正引用并交接 Zotero。
 
+## 可用技能
+
+| 技能 | 用途 | 入口 |
+|---|---|---|
+| `paper-research-workflow` | 中英文联合文献检索、核验与引用整理 | [技能说明](skills/paper-research-workflow/SKILL.md) |
+| `scut-paper-ppt` | 华工论文汇报与开题答辩 PPT，含四套编号模板的 59 张版式 | [使用说明与预览](skills/scut-paper-ppt/README.md) |
+
 ## 核心能力
 
 - 分别生成中文和英文检索式，不把机器翻译结果直接当作最终英文检索式。
@@ -13,14 +20,14 @@
 - 使用 PDF 全文核验研究方法、应用场景、结论和局限。
 - 支持 GB/T 7714、BibTeX、RIS 以及 Zotero 交接。
 
-## 安装
+## 文献技能安装
 
 ### Windows PowerShell
 
 ```powershell
-git clone https://github.com/cuijerdaye-hub/cnki-research-workflow.git
+git clone https://github.com/cuijerdaye-hub/paper-research-workflow.git
 Copy-Item -Recurse -Force `
-  ".\cnki-research-workflow\skills\paper-research-workflow" `
+  ".\paper-research-workflow\skills\paper-research-workflow" `
   "$env:USERPROFILE\.codex\skills\paper-research-workflow"
 ```
 
@@ -83,6 +90,12 @@ python .\skills\paper-research-workflow\scripts\merge_bilingual_candidates.py `
 
 ```text
 .codex-plugin/plugin.json
+skills/scut-paper-ppt/
+  SKILL.md
+  README.md
+  assets/defense-templates/
+  references/
+  scripts/
 skills/paper-research-workflow/
   SKILL.md
   agents/openai.yaml
@@ -97,4 +110,4 @@ skills/paper-research-workflow/
 
 ## 许可证
 
-本仓库原创内容采用 MIT License。第三方项目未被复制或捆绑，相关设计来源和许可证边界见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+本仓库原创内容采用 MIT License。文献检索的外部运行依赖需另行安装；PPT模板与品牌素材的说明及相关许可证边界见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
